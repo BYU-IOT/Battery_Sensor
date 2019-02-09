@@ -5,7 +5,7 @@
 #include <ESP8266HTTPClient.h>
 #include <QList.h>
 #include <Wire.h>
-#include <Adafruit_ADS1015.h>  // probably need to download
+#include <Adafruit_ADS1015.h>
 #include <stdio.h>
 #include <stdlib.h>
 
