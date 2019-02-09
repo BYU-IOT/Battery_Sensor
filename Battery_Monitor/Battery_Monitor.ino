@@ -87,21 +87,21 @@ void collectDataTick()
 
 void collectData()
 {
-//  int16_t adc0;  // we read from the ADC, we have a sixteen bit integer as a result
-//
-//  adc0 = ads.readADC_SingleEnded(0);
-//  current = (adc0 * 0.1875)/1000; // ????????????
-//  
-//  Serial.print("AIN0: "); 
-//  Serial.print(adc0);
-//  Serial.print("\tCurrent: ");
-//  Serial.println(current, 7);  
-//  Serial.println();
-//  delay(1000);
+  int16_t adc0;  // we read from the ADC, we have a sixteen bit integer as a result
+
+  adc0 = ads.readADC_SingleEnded(0);
+  current = (adc0 * 0.1875)/1000; // ????????????
   
-  current = random(0, 100);  // we read from the ADC, we have a sixteen bit integer as a result
+//  current = random(0, 100);  // we read from the ADC, we have a sixteen bit integer as a result
   dataQueue.push_front(current);
-  Serial.println("read sensor");
+//  Serial.println("read sensor");
+
+  Serial.print("AIN0: "); 
+  Serial.print(adc0);
+  Serial.print("\tCurrent: ");
+  Serial.println(current, 7);  
+  Serial.println();
+  delay(1000);
 }
 
 void postData(){
@@ -119,7 +119,7 @@ void postData(){
     char JSONmessageBuffer[300];
     JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
 
-    http.begin("http://192.168.1.205:8000/sendCurrent"); //HTTP
+    http.begin("http://localhost:8000/sendCurrent"); //HTTP
     http.addHeader("Content-Type", "application/json");  //Specify content-type header
 
     // start connection and send HTTP header
@@ -140,7 +140,7 @@ void postData(){
 }
 
 void getCommands(){
-    http.begin("http://192.168.1.205:8000/getCurrentCommands"); //HTTP
+    http.begin("http://localhost:8000/getCurrentCommands"); //HTTP
     int httpCode = http.GET(); // start connection and send HTTP header
 
     // httpCode will be negative on error
