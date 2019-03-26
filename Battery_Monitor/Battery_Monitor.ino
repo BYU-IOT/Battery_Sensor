@@ -16,6 +16,9 @@ int postInterval = 500; // 500ms or 1/2 sec is a good default
 int adcFrq = 10; // 10 ms is a good default
 //int sleepTime; // in seconds, this is computed based on interval and adcFrq
 
+String IP_Address = "localhost";
+String port = "8000";
+
 // these values are used for threading the different processes
 unsigned long currentMillis = 0;
 unsigned long previousClientMillis = 0;
@@ -87,21 +90,14 @@ void collectDataTick()
 
 void collectData()
 {
-  int16_t adc0;  // we read from the ADC, we have a sixteen bit integer as a result
+  int16_t adc0_voltage;  // we read from the ADC, we have a sixteen bit integer as a result
 
-  adc0 = ads.readADC_SingleEnded(0);
-  current = (adc0 * 0.1875)/1000; // ????????????
+  adc0_voltage = ads.readADC_SingleEnded(0);
+  Serial.printf("voltage is : %d\n", adc0_voltage);
+  current = 10000 * adc0_voltage; // 500A / 50mV shunt = 10,000
   
-//  current = random(0, 100);  // we read from the ADC, we have a sixteen bit integer as a result
+  //current = random(0, 100);  // testing code
   dataQueue.push_front(current);
-//  Serial.println("read sensor");
-
-  Serial.print("AIN0: "); 
-  Serial.print(adc0);
-  Serial.print("\tCurrent: ");
-  Serial.println(current, 7);  
-  Serial.println();
-  delay(1000);
 }
 
 void postData(){
@@ -119,7 +115,8 @@ void postData(){
     char JSONmessageBuffer[300];
     JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
 
-    http.begin("http://localhost:8000/sendCurrent"); //HTTP
+    String sendCurrent = "http://" + IP_Address + ":" + port + "/sendCurrent";
+    http.begin(sendCurrent); //HTTP
     http.addHeader("Content-Type", "application/json");  //Specify content-type header
 
     // start connection and send HTTP header
@@ -140,7 +137,8 @@ void postData(){
 }
 
 void getCommands(){
-    http.begin("http://localhost:8000/getCurrentCommands"); //HTTP
+    String getCurrentCommands = "http://" + IP_Address + ":" + port + "/getCurrentCommands";
+    http.begin(getCurrentCommands); //HTTP
     int httpCode = http.GET(); // start connection and send HTTP header
 
     // httpCode will be negative on error
