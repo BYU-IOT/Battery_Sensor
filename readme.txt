@@ -4,9 +4,7 @@ Download Battery_Monitor folder and place in your Arduino folder along side othe
 
 Add the supplied Battery_Sensor libraries into your Arduino Libraries folder
 
-Go to Preferences in the Arduino IDE and at the very bottom a path is given to directly edit the preferences.txt. Go to that path then do \packages\esp8266\hardware\esp8266\2.5.0-beta1\tools\sdk\include\user_interface.h to replace user_interface.h with the one provided.
-
-or alter "struct station_config" to look like
+Go to Preferences in the Arduino IDE and at the very bottom a path is given to directly edit the preferences.txt. Go to that path then do \packages\esp8266\hardware\esp8266\2.5.0-beta1\tools\sdk\include\user_interface.h to alter "struct station_config" to look like:
 
 ------------------------------------
 struct station_config {
@@ -23,3 +21,5 @@ struct station_config {
     bool open_and_wep_mode_disable; // Can connect to open/wep router by default.
 };
 --------------------------------------
+
+use the provided user_interface.h for reference.
