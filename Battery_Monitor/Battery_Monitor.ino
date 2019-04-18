@@ -16,7 +16,7 @@ int postInterval = 500; // 500ms or 1/2 sec is a good default
 int adcFrq = 10; // 10 ms is a good default
 //int sleepTime; // in seconds, this is computed based on interval and adcFrq
 
-String IP_Address = "localhost";
+String IP_Address = "192.168.1.255"; //type in ifconfig (ipconfig if not mac) and replace with ip4 number
 String port = "8000";
 
 // these values are used for threading the different processes
@@ -101,19 +101,20 @@ void collectData()
 }
 
 void postData(){
-    StaticJsonBuffer<300> JSONbuffer; //You can use ArduinoJson Assistant to compute the exact buffer size
-    JsonObject& JSONencoder = JSONbuffer.createObject();
+    StaticJsonDocument<300> JSONencoder; //You can use ArduinoJson Assistant to compute the exact buffer size
     JSONencoder["sensorType"] = "Current";
-    JsonArray& values = JSONencoder.createNestedArray("readings"); //JSON array
+    JsonArray values = JSONencoder.to<JsonArray>(); //JSON array
+    values.add("readings");
+    JsonArray nested = values.createNestedArray();
 
     //remove values from queue to Json array to be sent
     while(dataQueue.length() > 0){
-        values.add(dataQueue.front());
+        nested.add(dataQueue.front());
         dataQueue.pop_front();
     }
 
     char JSONmessageBuffer[300];
-    JSONencoder.prettyPrintTo(JSONmessageBuffer, sizeof(JSONmessageBuffer));
+    serializeJsonPretty(values, JSONmessageBuffer);
 
     String sendCurrent = "http://" + IP_Address + ":" + port + "/sendCurrent";
     http.begin(sendCurrent); //HTTP
@@ -149,9 +150,15 @@ void getCommands(){
       if (httpCode == HTTP_CODE_OK) { // file found at server
         // Parsing
         const size_t bufferSize = JSON_ARRAY_SIZE(3) + 4*JSON_OBJECT_SIZE(2) + 125;   
-        DynamicJsonBuffer jsonBuffer(bufferSize);
-        JsonObject& root = jsonBuffer.parseObject(http.getString());
-        JsonArray& commands = root["commands"];
+        DynamicJsonDocument jsonBuffer(bufferSize);
+        DeserializationError error = deserializeJson(jsonBuffer, http.getString());
+        if (error) {
+          Serial.print(F("deserializeJson() failed: "));
+          Serial.println(error.c_str());
+          return;
+        }
+        ////////////////////////JsonObject& root = jsonBuffer.parseObject(http.getString());
+        JsonArray commands = jsonBuffer["commands"];
 
          for(int i=0; i<commands.size(); i++){
             const char* command_action = commands[i]["action"];
