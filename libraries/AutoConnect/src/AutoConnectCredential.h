@@ -2,8 +2,8 @@
  *  Declaration of AutoConnectCredential class.
  *  @file AutoConnectCredential.h
  *  @author hieromon@gmail.com
- *  @version  0.9.5
- *  @date 2018-02-17
+ *  @version  0.9.6
+ *  @date 2018-09-27
  *  @copyright  MIT license.
  */
 
@@ -11,23 +11,21 @@
 #define _AUTOCONNECTCREDENTIAL_H_
 
 #include <Arduino.h>
-
 #if defined(ARDUINO_ARCH_ESP8266)
 extern "C" {
 #include <user_interface.h>
 }
-
-#elif defined(ARDUINO_ARCH_ESP32) //########################### doesnt enter
+#elif defined(ARDUINO_ARCH_ESP32)
 #include <esp_wifi.h>
 struct station_config {
     uint8_t  ssid[32];
     uint8_t  password[64];
     uint8_t  bssid_set;
-
     uint8_t  bssid[6];
     wifi_fast_scan_threshold_t threshold;
 };
-#endif //####################################################### doesnt enter
+#endif
+
 /** Credential storage area offset specifier in EEPROM.
  *  By defining AC_IDENTIFIER_OFFSET macro in the user sketch, the credential
  *  storage area can be shifted in EEPROM.
@@ -40,16 +38,16 @@ struct station_config {
 class AutoConnectCredential {
  public:
   AutoConnectCredential();
-  AutoConnectCredential(uint16_t offset);
+  explicit AutoConnectCredential(uint16_t offset);
   ~AutoConnectCredential();
-  uint8_t   entries() { return _entries; }
+  uint8_t   entries(void) { return _entries; }
   bool      del(const char* ssid);
   int8_t    load(const char* ssid, struct station_config* config);
   bool      load(int8_t entry, struct station_config* config);
   bool      save(const struct station_config* config);
 
  private:
-  void      _allocateEntry();   /**< Initialize storage for credentials. */
+  void      _allocateEntry(void);   /**< Initialize storage for credentials. */
   void      _retrieveEntry(char* ssid, char* password, char* serverName, char* sensorName, char* interval, char* adcFrq, uint8_t* bssid);   /**< Read an available entry. */    //............ added the new variables in the header
 
   uint8_t   _entries;       /**< Count of the available entry */

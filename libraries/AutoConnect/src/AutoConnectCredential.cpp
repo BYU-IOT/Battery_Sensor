@@ -9,7 +9,6 @@
 
 #include <EEPROM.h>
 #include "AutoConnectCredential.h"
-#include "AutoConnect.h"
 
 #define AC_IDENTIFIER "AC_CREDT"
 #define AC_HEADERSIZE ((int)(_offset + sizeof(AC_IDENTIFIER) - 1 + sizeof(uint8_t) + sizeof(uint16_t)))
@@ -44,7 +43,7 @@ AutoConnectCredential::AutoConnectCredential(uint16_t offset) {
   _allocateEntry();
 }
 
-void AutoConnectCredential::_allocateEntry() {
+void AutoConnectCredential::_allocateEntry(void) {
   char    id_c[sizeof(AC_IDENTIFIER) - 1];
   uint8_t c;
 
