@@ -1,6 +1,6 @@
 Cant get the d1 Mini to successfully communicate with the server at the OIT building, ask kelly for opinions. However I can run the same code with updating the ip address at school and it works.
 
-# STEPS:
+STEPS:
 
 Install Arduino IDE
 
