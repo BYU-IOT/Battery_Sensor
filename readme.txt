@@ -15,7 +15,8 @@
     - Adafruit ADS1x15
 
 4. Replace User_interface.h fiel
-    Go to Preferences in the Arduino IDE and at the very bottom a path is given to directly edit the preferences.txt. Go to that path then      do \packages\esp8266\hardware\esp8266\?.?.?\tools\sdk\include\user_interface.h and replace wiht the user_interface.h file provided.
+    Go to Preferences in the Arduino IDE and at the very bottom a path is given to directly edit the preferences.txt. Go to that path then 
+    do \packages\esp8266\hardware\esp8266\?.?.?\tools\sdk\include\user_interface.h and replace wiht the user_interface.h file provided.
 
 5. Replace AutoConnect files
     Go to your arduino folder and your local folder cantaining the AutoConnect files and replace them with these 6 files provided:
