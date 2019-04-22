@@ -16,13 +16,13 @@
     - Go to Preferences in the Arduino IDE and at the very bottom a path is given to directly edit the preferences.txt. Go to that path then go to \packages\esp8266\hardware\esp8266\?.?.?\tools\sdk\include\user_interface.h and replace it with the user_interface.h file provided.
 
 5. Replace AutoConnect files
-    Go to your arduino folder and your local folder cantaining the AutoConnect files and replace them with these 6 files provided:
-    - AutoConnect.cpp
-    - AutoConnect.h
-    - AutoConnectCredential.cpp
-    - AutoConnectCredential.h
-    - AutoConnectPage.cpp
-    - AutoConnectPage.h
+    - Go to your arduino folder and your local folder cantaining the AutoConnect files and replace them with these 6 files provided:
+    1. AutoConnect.cpp
+    2. utoConnect.h
+    3. AutoConnectCredential.cpp
+    4. AutoConnectCredential.h
+    5. AutoConnectPage.cpp
+    6. AutoConnectPage.h
     
     
     
